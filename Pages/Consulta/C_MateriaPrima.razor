@@ -1,0 +1,108 @@
+﻿@page "/c_MateriaPrima"
+@inject MateriaPrimaBLL MateriaPrimaBLL
+
+<EditForm Model="lista">
+    <DataAnnotationsValidator />
+
+    <div class="container-fluid">
+        <div class="card bg-light">
+            <div class="card-header">
+                <h3 class="text-primary text-center">Consulta Materia Prima</h3>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <label class="form-label">Criterio</label>
+                        <input type="text" class="form-control" @bind="Criterio">
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="form-label">Filtro</label>
+                        <select class="form-select" @bind="Filtro">
+                            <option value="1">Producto Id</option>
+                            <option value="2">Descripción</option>
+                            <option value="3">Precio</option>
+                            <option value="4">Existencia</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="form-label">&nbsp;</label>
+                        <button type="button" class="btn btn-primary w-100" @onclick="Buscar">
+                            <i class="bi bi-search"></i> Buscar
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered" style="background-color: #f4f4de">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Producto Id</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Precio</th>
+                                <th>Existencia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (lista != null && lista.Any())
+                            {
+                                @foreach (var producto in lista)
+                                {
+                                    <tr>
+                                        <td>@producto.MateriaPrimaId</td>
+                                        <td>@producto.Nombre</td>
+                                        <td>@producto.Descripcion</td>
+                                        <td>@producto.Precio</td>
+                                        <td>@producto.Existencia</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5">No se encontraron productos</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+@code
+{
+    private string Filtro { get; set; } = "";
+    private string Criterio { get; set; } = "";
+    private List<MateriasPrimas> lista = new List<MateriasPrimas>();
+
+    protected override void OnInitialized()
+    {
+        lista = MateriaPrimaBLL.GetList(o => true);
+    }
+
+    private void Buscar()
+    {
+        switch (Filtro)
+        {
+            case "1":
+                lista = MateriaPrimaBLL.GetList(p => p.MateriaPrimaId.ToString().Contains(Criterio));
+                break;
+
+            case "2":
+                lista = MateriaPrimaBLL.GetList(d => (d.Descripcion ?? "").Contains(Criterio));
+                break;
+
+            case "3":
+                lista = MateriaPrimaBLL.GetList(n => n.Nombre.ToString().Contains(Criterio));
+                break;
+
+            case "4":
+                lista = MateriaPrimaBLL.GetList(p => p.Precio.ToString().Contains(Criterio));
+                break;
+
+            case "5":
+                lista = MateriaPrimaBLL.GetList(e => e.Existencia.ToString().Contains(Criterio));
+                break;
+        }
+    }
+}
