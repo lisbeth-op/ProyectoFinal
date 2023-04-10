@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Radzen;
 using System.Linq.Expressions;
 
 public class OrdenesProduccionBLL
@@ -201,7 +202,7 @@ public class OrdenesProduccionBLL
 
         try
         {
-            lista = _contexto.OrdenDeProducciones.AsNoTracking().ToList();
+            lista = _contexto.OrdenDeProducciones.Where(ctr).AsNoTracking().ToList();
         }
         catch (Exception)
         {

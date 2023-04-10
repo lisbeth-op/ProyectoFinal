@@ -24,7 +24,7 @@
                     </div>
                     <div class="col-4">
                         <label>Criterio:</label>
-                        <input type="text" class="form-control" @bind="@Criterio" />
+                        <input type="text" class="form-control" @bind="Criterio" />
                     </div>
                 </div>
                 <div class="row">
@@ -101,7 +101,7 @@
         {
 
             case "1":
-                lista = OrdenBLL.GetList(o => o.OrdenDeProduccionId.ToString().Contains(Criterio));
+                lista = OrdenBLL.GetList(o => o.OrdenDeProduccionId.Equals(Convert.ToInt32(Criterio)));
                 break;
 
             case "2":

@@ -68,13 +68,19 @@ public class RecetasBLL
     public bool Eliminar(int recetaId)
     {
         var receta = _contexto.Recetas.SingleOrDefault(r => r.RecetaId == recetaId);
-
+        bool paso = false;
         if (receta != null)
         {
+            var producto = _contexto.Productos.Find(receta.ProductoId);
+            if (producto != null)
+            {
+                producto.RecetaId =0;
+                _contexto.Entry(producto).State = EntityState.Modified;
+            }
+            paso=_contexto.SaveChanges()>0;
             _contexto.Recetas.Remove(receta);
-            return _contexto.SaveChanges() > 0;
         }
-        return false;
+        return paso;
     }
 
 }

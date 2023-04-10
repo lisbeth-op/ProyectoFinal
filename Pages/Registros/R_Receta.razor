@@ -163,7 +163,7 @@
         @*var productoEncontrado = ProductosBLL.Buscar(receta.ProductoId);
         if (productoEncontrado!=null)
         {
-            if (productoEncontrado != null && productoEncontrado.RecetaId != 0)
+            if (productoEncontrado.RecetaId !=0 || productoEncontrado.RecetaId !=this.receta.RecetaId)
             {
                 ShowNotification(
                 new NotificationMessage
@@ -177,7 +177,7 @@
             }
             
             
-        }
+        }else
         {
             ShowNotification(
                 new NotificationMessage
@@ -186,7 +186,7 @@
                         Summary = "El Producto No se encuentra"
                     });
             return;
-        }*@else
+        }*@
         if (RecetasBLL.Guardar(receta))
         {
             Nuevo();
