@@ -5,9 +5,9 @@ public class MateriasPrimas
     [Key]
     public int MateriaPrimaId { get; set; }
 
-    [Required(ErrorMessage = "Campo obligatorio.")]
+    [Required(ErrorMessage = "Debe asignarle nombre a la materia prima.")]
     public string Nombre { get; set; }
-
+    [Required(ErrorMessage = "Campo obligatorio.")]
     public string? Descripcion { get; set; }
 
     [Required(ErrorMessage = "Campo obligatorio.")]

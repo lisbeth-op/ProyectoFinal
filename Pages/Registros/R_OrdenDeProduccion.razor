@@ -1,0 +1,260 @@
+﻿@page "/R_OrdenDeProduccion"
+@page "/R_OrdenDeProduccion/{OrdenId:int}"
+@inject ProductosBLL ProductosBLL
+@inject OrdenesProduccionBLL ordenDeProduccionBLL
+@inject NotificationService notificationService
+
+<EditForm Model="orden" OnValidSubmit="Guardar">
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Orden de Produccion</h3>
+        </div>
+
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <label for="txtId" class="form-label">Id:</label>
+                    <InputNumber  class="form-control" @bind-Value="orden.OrdenDeProduccionId"></InputNumber>
+                </div>
+
+                <div class="col-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <label for="txtFecha" class="form-label"> Fecha:</label>
+                    <InputDate class="form-control" @bind-Value="orden.Fecha"/>
+                   
+                </div>
+
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h4>Orden</h4>
+                </div>
+
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-sm-4">
+                            <label for="select" class="form-label">Productos:</label>
+                            <InputSelect class="form-select" @bind-Value="detalleOrden.ProductoId">
+                                @foreach (var producto in listaProductos)
+                                {
+                                    <option value="@producto.ProductoId">@producto.Nombre</option>
+                                }
+                            </InputSelect>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <label for="txtEjemplo" class="form-label">Cantidad:</label>
+                            <InputNumber  class="form-control" @bind-Value="detalleOrden.Cantidad"></InputNumber>
+                            <ValidationMessage For="@(() => detalleOrden.Cantidad)" />
+                        </div>
+
+                        <div class="col-sm-4 d-flex align-items-end">
+                            <button type="button" class="btn btn-primary" @onclick="@(()=>Agregar())">Agregar</button>
+                        </div>
+                    </div>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Producto Id</th>
+                                <th>Nombre </th>
+                                <th>Descripci&oacute;n</th>
+                                <th>Cantidad</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var detalle in orden.DetalleOrdenDeProduccions)
+                            {
+                                productos = ProductosBLL.Buscar(detalle.ProductoId);
+                                if (productos != null)
+                                {
+                                    <tr>
+                                        <td>@detalle.ProductoId</td>
+                                        <td>@productos.Nombre</td>
+                                        <td>@productos.Descripcion</td>
+                                        <td>@detalle.Cantidad</td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger mr-2"
+                                            @onclick=@(() => EliminarDetalle(detalle.DetelleOrdenDeProduccionID))>
+                                                <span class="oi oi-trash"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+
+                            }
+                        </tbody>
+                    </table>
+                   
+                    </div>
+                </div>
+
+                <div class="card-footer text-centerc">
+                    <button type="button" class="btn btn-primary mr-2" @onclick="Nuevo"> Nuevo </button>
+                    <button type="submit" name="BtnGuardar" id="BtnGuardar" class="btn btn-success mr-2"> Guardar </button>
+                    <button type="button" class="btn btn-danger mr-2" @onclick="Eliminar">
+                        Eliminar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+
+@code {
+
+    [Parameter]
+    public int OrdenId { get; set; }
+    public Productos? productos { get; set; } = new Productos();
+    public DetalleOrdenDeProduccion detalleOrden { get; set; } = new DetalleOrdenDeProduccion();
+    public List<Productos> listaProductos = new List<Productos>();
+    public OrdenDeProducciones orden { get; set; } = new OrdenDeProducciones();
+
+    protected override void OnInitialized()
+    {
+
+        listaProductos = ProductosBLL.GetList(o => true);
+        detalleOrden = new DetalleOrdenDeProduccion();
+        if (OrdenId > 0)
+        {
+            this.orden.OrdenDeProduccionId = OrdenId;
+            Buscar();
+        }
+    }
+
+    void Guardar()
+    {
+        if (!Validar())
+        {
+            ShowNotification(
+                 new NotificationMessage
+                     {
+                         Severity = NotificationSeverity.Warning,
+                         Summary = "Se necesitan al menos un detalle"
+                     });
+            return;
+        }
+        if (ordenDeProduccionBLL.Guardar(orden))
+        {
+            Nuevo();
+            ShowNotification(
+                 new NotificationMessage
+                     {
+                         Severity = NotificationSeverity.Success,
+                         Summary = "Guardado correctamente"
+                     });
+        }
+
+    }
+
+    void Buscar()
+    {
+        var buscarOrden = ordenDeProduccionBLL.Buscar(orden.OrdenDeProduccionId);
+
+        if (buscarOrden == null)
+        {
+            ShowNotification(
+                   new NotificationMessage
+                       {
+                           Severity = NotificationSeverity.Info,
+                           Summary = "ID no existe"
+                       });
+            return;
+
+
+        }
+
+        orden = buscarOrden;
+
+
+
+    }
+    void Agregar()
+    {
+        if (detalleOrden.Cantidad > 0 && detalleOrden.ProductoId > 0)
+        {
+            var productoEncontrado = ProductosBLL.Buscar(detalleOrden.ProductoId);
+            if (productoEncontrado == null)
+            {
+                ShowNotification(
+                new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Error,
+                    Summary = "El producto no existe"
+                });
+                return;
+            }
+
+            orden.DetalleOrdenDeProduccions.Add(detalleOrden);
+            this.orden.CostoTotal += (decimal)productoEncontrado.Precio;
+            detalleOrden = new DetalleOrdenDeProduccion();
+        }
+    }
+
+    void Nuevo()
+    {
+        orden = new OrdenDeProducciones();
+        detalleOrden = new DetalleOrdenDeProduccion();
+
+    }
+    void Eliminar()
+    {
+        if (ordenDeProduccionBLL.Existe(orden.OrdenDeProduccionId))
+        {
+
+            Nuevo();
+            ShowNotification(
+               new NotificationMessage
+                   {
+                       Severity = NotificationSeverity.Success,
+                       Summary = "Eliminado correctamente"
+                   });
+
+        }
+
+    }
+    void EliminarDetalle(int IdDetalle)
+    {
+        if (orden.DetalleOrdenDeProduccions == null || IdDetalle <= 0)
+        {
+            
+
+            return;
+        }
+
+        orden.DetalleOrdenDeProduccions.RemoveAll(d => d.DetelleOrdenDeProduccionID == IdDetalle);
+
+        int cantidadTotal = orden.DetalleOrdenDeProduccions.Sum(c => c.Cantidad);
+
+    }
+
+    bool Validar()
+    {
+        int cantidadTotal = orden.DetalleOrdenDeProduccions.Sum(d => d.Cantidad);
+        if (
+           
+            orden.DetalleOrdenDeProduccions.Count < 1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    void ShowNotification(NotificationMessage message)
+    {
+        notificationService.Notify(message);
+    }
+
+
+
+}

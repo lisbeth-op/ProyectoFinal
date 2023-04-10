@@ -6,9 +6,10 @@ public class Productos
     public int ProductoId { get; set; }
     public int RecetaId { get; set; }
 
-    [Required(ErrorMessage = "Se de agregar nombre al producto.")]
+    [Required(ErrorMessage = "Se debe agregar nombre al producto.")]
     [MinLength(2)]
     public string Nombre { get; set; }
+    [Required(ErrorMessage = "Campo obligatorio.")]
     public string? Descripcion { get; set; }
     [Required(ErrorMessage = "Campo obligatorio.")]
     public double Precio { get; set; }

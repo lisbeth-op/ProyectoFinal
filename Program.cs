@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using PFinal.Areas.Identity;
 using PFinal.Data;
+using Radzen;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -21,7 +23,7 @@ builder.Services.AddDbContext<Contexto>(options =>
 builder.Services.AddScoped<ProductosBLL>();
 builder.Services.AddScoped<MateriaPrimaBLL>();
 builder.Services.AddScoped<RecetasBLL>();
-builder.Services.AddScoped<OrdenDeProducciones>();
+builder.Services.AddScoped<OrdenesProduccionBLL>();
 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -32,6 +34,11 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 builder.Services.AddSingleton<WeatherForecastService>();
+
+builder.Services.AddScoped<DialogService>();
+builder.Services.AddScoped<NotificationService>();
+builder.Services.AddScoped<TooltipService>();
+builder.Services.AddScoped<ContextMenuService>();
 
 var app = builder.Build();
 //--------------------------------------------------------------------------------------//

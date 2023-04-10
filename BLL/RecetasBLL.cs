@@ -16,14 +16,16 @@ public class RecetasBLL
     }
     public bool Insertar(Recetas receta)
     {
+        bool paso=false;
         _contexto.Recetas.Add(receta);
+        paso= _contexto.SaveChanges() > 0;
         var producto = _contexto.Productos.Find(receta.ProductoId);
         if (producto != null)
         {
             producto.RecetaId = receta.RecetaId;
             _contexto.Entry(producto).State=EntityState.Modified;
         }
-        return _contexto.SaveChanges() > 0;
+        return paso;
     }
     public bool Guardar(Recetas receta) 
     {
@@ -41,26 +43,26 @@ public class RecetasBLL
     public Recetas? Buscar(int recetaId)
     {
         return _contexto.Recetas.Include(r => r.detalleRecetas)
-                                 .ThenInclude(dr => dr.MateriaPrimaId)
                                  .SingleOrDefault(r => r.RecetaId == recetaId);
     }
 
     public List<Recetas> GetList(Expression<Func<Recetas, bool>> criterio)
     {
         return _contexto.Recetas.Include(r => r.detalleRecetas)
-                                 .ThenInclude(dr => dr.MateriaPrimaId)
                                  .Where(criterio).ToList();
     }
     public bool Modificar(Recetas receta)
     {
+        bool paso = false;
         _contexto.Entry(receta).State = EntityState.Modified;
+        paso= _contexto.SaveChanges()>0;
         var producto = _contexto.Productos.Find(receta.ProductoId);
         if (producto != null)
         {
             producto.RecetaId = receta.RecetaId;
             _contexto.Entry(producto).State = EntityState.Modified;
         }
-        return _contexto.SaveChanges()>0;
+        return paso;
     }
 
     public bool Eliminar(int recetaId)

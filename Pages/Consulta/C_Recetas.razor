@@ -1,0 +1,80 @@
+﻿@page "/c_receta"
+
+@inject RecetasBLL RecetaBLL;
+@inject ProductosBLL produtos;
+
+<EditForm Model="lista">
+    <DataAnnotationsValidator />
+
+    <div class="container-fluid" style="background-color:wheat">
+        <div class="card bg-light">
+            <div class="card-header" style="background-color:lightyellow">
+                <h3 class="text-primary text-center">Consulta Receta</h3>
+            </div>
+            <div class="card-body">
+   
+
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered" style="background-color: #f4f4de">
+                        <thead class="table-primary">
+                        <tr>
+                            <th>Id Producto</th>
+                            <th>Producto</th>
+                            <th>Ver Registro</th>
+                            
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        @if (lista != null && lista.Any())
+                        {
+                            @foreach (var N_product  in lista)
+                            {
+                                productos = produtos.Buscar(N_product.ProductoId);
+                                if (productos!=null)
+                                {
+                                    <tr>
+                                        <td>@N_product.RecetaId</td>
+                                        <td>@productos.Nombre</td>
+
+                                        <td><a href="/R_Recetas/@N_product.RecetaId">Ver</a></td>
+                                    </tr>
+
+                                }
+                            }
+                        }
+                       
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</EditForm>
+@code {
+    public string Filtro { get; set; } = "";
+    public string Criterio { get; set; } = "";
+    public List<Recetas> lista { get; set; } = new List<Recetas>();
+    public Productos? productos { get; set; }
+
+    public void Buscar()
+    {
+        switch (Filtro)
+        {
+
+            case "1":
+                lista = RecetaBLL.GetList(o => o.ProductoId.ToString().Contains(Criterio));
+                break;
+        }
+
+
+    }
+
+    protected override void OnInitialized()
+    {
+        lista = RecetaBLL.GetList(o => true);
+    }
+
+
+
+}

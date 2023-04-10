@@ -1,5 +1,7 @@
 ﻿@inject ProductosBLL ProductosBLL
 @page "/productos"
+@inject NotificationService notificationService
+
 <EditForm Model="producto" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
 
@@ -8,7 +10,7 @@
             <h3>Producto</h3>
         </div>
 
-        <div class="card-body">
+        <div class="card-body" style="border-block-color" >
             <div class="form-group row">
                 <div class="col-sm-3">
                     <label for="txtId" class="form-label">Id:</label>
@@ -23,7 +25,7 @@
              <div class="col-sm-6">
                 <label for="txtConcepto" class="form-label">Nombre:</label>
                 <input type="text" id="txtConcepto" class="form-control" @bind-value="producto.Nombre">
-                <ValidationMessage For="@(() => producto.Descripcion)" />
+                <ValidationMessage For="@(() => producto.Nombre)" />
             </div>
          
             <div class="col-sm-6">
@@ -89,8 +91,23 @@
         var ProductoEncontrado = ProductosBLL.Buscar(producto.ProductoId);
         if (ProductoEncontrado != null)
             this.producto = ProductoEncontrado;
+            
+            else
+        {
+            ShowNotification(
+                   new NotificationMessage
+                       {
+                           Severity = NotificationSeverity.Info,
+                           Summary = "ID no existe"
+                       }
+                           );
+            
 
-    }
+
+        }
+        }
+
+    
     void Nuevo()
     {
         this.producto = new Productos();
@@ -102,6 +119,14 @@
         if (ProductosBLL.Guardar(this.producto))
    
              Nuevo();
+             if (ProductosBLL.Eliminar(this.producto))
+          Nuevo();
+           ShowNotification(
+               new NotificationMessage
+                   {
+                       Severity = NotificationSeverity.Error,
+                       Summary = "Guardado correctamente"
+                   });
            
     }
 
@@ -109,9 +134,19 @@
     {
         if (ProductosBLL.Eliminar(this.producto))
           Nuevo();
+           ShowNotification(
+               new NotificationMessage
+                   {
+                       Severity = NotificationSeverity.Error,
+                       Summary = "Eliminado correctamente"
+                   });
            
     }
 
+     void ShowNotification(NotificationMessage message)
+    {
+        notificationService.Notify(message);
+    }
 
 
 

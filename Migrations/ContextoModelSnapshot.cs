@@ -25,10 +25,7 @@ namespace PFinal.Migrations
                     b.Property<int>("Cantidad")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("OrdenDeProduccionId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("OrdenProduccionId")
+                    b.Property<int>("OrdenDeProduccionId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ProductoId")
@@ -85,6 +82,40 @@ namespace PFinal.Migrations
                     b.HasKey("MateriaPrimaId");
 
                     b.ToTable("MateriasPrimas");
+
+                    b.HasData(
+                        new
+                        {
+                            MateriaPrimaId = 1,
+                            Descripcion = "azucar",
+                            Existencia = 100,
+                            Nombre = "morena",
+                            Precio = 50.0
+                        },
+                        new
+                        {
+                            MateriaPrimaId = 2,
+                            Descripcion = "Harina",
+                            Existencia = 100,
+                            Nombre = "Blanca",
+                            Precio = 50.0
+                        },
+                        new
+                        {
+                            MateriaPrimaId = 3,
+                            Descripcion = "Elevadura",
+                            Existencia = 100,
+                            Nombre = "no se",
+                            Precio = 50.0
+                        },
+                        new
+                        {
+                            MateriaPrimaId = 4,
+                            Descripcion = "sal",
+                            Existencia = 100,
+                            Nombre = "molida",
+                            Precio = 50.0
+                        });
                 });
 
             modelBuilder.Entity("OrdenDeProducciones", b =>
@@ -178,7 +209,9 @@ namespace PFinal.Migrations
                 {
                     b.HasOne("OrdenDeProducciones", null)
                         .WithMany("DetalleOrdenDeProduccions")
-                        .HasForeignKey("OrdenDeProduccionId");
+                        .HasForeignKey("OrdenDeProduccionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DetalleRecetas", b =>

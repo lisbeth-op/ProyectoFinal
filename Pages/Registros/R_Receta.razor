@@ -1,1 +1,310 @@
-﻿
+﻿@page "/R_Recetas"
+@page "/R_Recetas/{RecetaId:int}"
+@inject RecetasBLL RecetasBLL
+@inject ProductosBLL ProductosBLL
+@inject MateriaPrimaBLL materiaPrimaBLL
+@inject NotificationService notificationService
+
+<EditForm Model="receta" OnValidSubmit="Guardar">
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Receta</h3>
+        </div>
+
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <label for="txtId" class="form-label">Id:</label>
+                    <InputNumber class="form-control" @bind-Value="receta.RecetaId"></InputNumber>
+                </div>
+
+                <div class="col-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+                </div>
+            </div>
+
+
+
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h4>Ingredientes</h4>
+                </div>
+
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-sm-4">
+                            <label for="select" class="form-label">Materia Prima:</label>
+                            <InputSelect class="form-select" @bind-Value="detalleReceta.MateriaPrimaId">
+                                @foreach (var materia in listaMateria)
+                                {
+                                    <option value="@materia.MateriaPrimaId">@materia.Descripcion @materia.Nombre</option>
+                                }
+                            </InputSelect>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <label for="txtEjemplo" class="form-label">Cantidad:</label>
+                            <InputNumber class="form-control" @bind-Value="detalleReceta.Cantidad"></InputNumber>
+                            <ValidationMessage For="@(() => detalleReceta.Cantidad)" />
+                        </div>
+
+                        <div class="col-sm-4 d-flex align-items-end">
+                            <button type="button" class="btn btn-primary" @onclick="@(()=>Agregar())">Agregar</button>
+                        </div>
+                    </div>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Producto Id</th>
+                                <th>Nombre </th>
+                                <th>Descripci&oacute;n</th>
+                                <th>Cantidad</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var detalle in receta.detalleRecetas)
+                            {
+                                materiaP = materiaPrimaBLL.Buscar(detalle.MateriaPrimaId);
+                                if (materiaP != null)
+                                {
+                                    <tr>
+                                        <td>@detalle.MateriaPrimaId</td>
+                                        <td>@materiaP.Nombre</td>
+                                        <td>@materiaP.Descripcion</td>
+                                        <td>@detalle.Cantidad</td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger mr-2"
+                                            @onclick=@(() => EliminarDetalle(detalle.DetalleRecetaId))>
+                                                <span class="oi oi-trash"></span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+
+                            }
+                        </tbody>
+                    </table>
+
+
+                    <h3>A Producir </h3>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="txtDescripcion" class="form-label"> Producto:</label>
+                            <InputSelect class="form-select" @bind-Value="receta.ProductoId">
+                                @foreach (var producto in listaProductos)
+                                {
+                                    <option value="@producto.ProductoId">@producto.Nombre</option>
+                                }
+                            </InputSelect>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="card-footer text-centerc">
+                    <button type="button" class="btn btn-primary mr-2" @onclick="Nuevo"> Nuevo </button>
+                    <button type="submit" name="BtnGuardar" id="BtnGuardar" class="btn btn-success mr-2"> Guardar </button>
+                    <button type="button" class="btn btn-danger mr-2" @onclick="Eliminar">
+                        Eliminar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+
+@code {
+
+    [Parameter]
+    public int RecetaId { get; set; }
+    public MateriasPrimas? materiaP { get; set; }
+    public Recetas receta { get; set; } = new Recetas();
+    public DetalleRecetas detalleReceta { get; set; } = new DetalleRecetas();
+    public List<MateriasPrimas> listaMateria = new List<MateriasPrimas>();
+    public List<Productos> listaProductos = new List<Productos>();
+
+    protected override void OnInitialized()
+    {
+        listaMateria = materiaPrimaBLL.GetList(o => true);
+        listaProductos = ProductosBLL.GetList(o => true);
+        detalleReceta = new DetalleRecetas();
+        if (RecetaId > 0)
+        {
+            this.receta.RecetaId = RecetaId;
+            Buscar();
+        }
+    }
+
+    void Guardar()
+    {
+
+        if (!Validar())
+        {
+            ShowNotification(
+                 new NotificationMessage
+                     {
+                         Severity = NotificationSeverity.Error,
+                         Summary = "Se necesitan al menos un detalle"
+                     });
+            return;
+        }
+        var productoEncontrado = ProductosBLL.Buscar(receta.ProductoId);
+        if (productoEncontrado!=null)
+        {
+            if (productoEncontrado.RecetaId !=0)
+            {
+                ShowNotification(
+                new NotificationMessage
+                    {
+                        Severity = NotificationSeverity.Info,
+                        Summary = "El Producto ya tiene una receta atribuida"
+                    });
+                    return;
+
+
+            }
+            
+            
+        }else
+        {
+            ShowNotification(
+                new NotificationMessage
+                    {
+                        Severity = NotificationSeverity.Error,
+                        Summary = "El Producto No se encuentra"
+                    });
+            return;
+        }
+        if (RecetasBLL.Guardar(receta))
+        {
+            Nuevo();
+            ShowNotification(
+                 new NotificationMessage
+                     {
+                         Severity = NotificationSeverity.Success,
+                         Summary = "Guardado correctamente"
+                     });
+        }
+
+    }
+
+    void Buscar()
+    {
+        var recetaEncontrada = RecetasBLL.Buscar(receta.RecetaId);
+
+        if (recetaEncontrada == null)
+        {
+            ShowNotification(
+                   new NotificationMessage
+                       {
+                           Severity = NotificationSeverity.Info,
+                           Summary = "ID no existe"
+                       });
+            return;
+
+
+        }
+
+        receta = recetaEncontrada;
+
+
+
+    }
+    void Agregar()
+    {
+
+        if (detalleReceta.Cantidad > 0 && detalleReceta.MateriaPrimaId > 0)
+        {
+
+            var materiaPrimaEncontrada = materiaPrimaBLL.Buscar(detalleReceta.MateriaPrimaId);
+            if (materiaPrimaEncontrada != null && materiaPrimaEncontrada.Existencia < detalleReceta.Cantidad)
+            {
+                ShowNotification(
+                    new NotificationMessage
+                        {
+                            Severity = NotificationSeverity.Error,
+                            Summary = "Materia Prima No encontrada"
+                        });
+                return;
+            }
+            receta.detalleRecetas.Add(detalleReceta);
+
+
+            detalleReceta = new DetalleRecetas();
+
+        }
+        else if (detalleReceta.Cantidad < 1)
+        {
+
+            ShowNotification(
+                        new NotificationMessage
+                            {
+                                Severity = NotificationSeverity.Error,
+                                Summary = "Debe especificar la cantidad"
+                            });
+
+        }
+    }
+    void Nuevo()
+    {
+        receta = new Recetas();
+        detalleReceta = new DetalleRecetas();
+
+    }
+    void Eliminar()
+    {
+        if (RecetasBLL.Eliminar(receta.RecetaId))
+        {
+
+            Nuevo();
+            ShowNotification(
+                new NotificationMessage
+                    {
+                        Severity = NotificationSeverity.Warning,
+                        Summary = "Eliminado correctamente"
+                    });
+
+        }
+
+    }
+    void EliminarDetalle(int IdDetalle)
+    {
+        if (receta.detalleRecetas == null || IdDetalle <= 0)
+        {
+            return;
+        }
+
+        receta.detalleRecetas.RemoveAll(d => d.DetalleRecetaId == IdDetalle);
+
+        int cantidadTotal = receta.detalleRecetas.Sum(c => c.Cantidad);
+
+    }
+
+    bool Validar()
+    {
+        int cantidadTotal = receta.detalleRecetas.Sum(d => d.Cantidad);
+        if (
+
+            receta.detalleRecetas.Count < 1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    void ShowNotification(NotificationMessage message)
+    {
+        notificationService.Notify(message);
+    }
+
+
+
+}

@@ -1,0 +1,88 @@
+﻿@page "/c_orden"
+
+@inject OrdenesProduccionBLL OrdenBLL;
+
+
+<EditForm Model="lista">
+    <DataAnnotationsValidator />
+
+     <div class="container-fluid" style="background-color:wheat">
+        <div class="card bg-light">
+            <div class="card-header" style="background-color:lightyellow">
+                <h3 class="text-primary text-center">Consulta Orden de produccion</h3>
+            </div>
+            <div class="card-body">
+
+                    <table class="table table-hover table-bordered" style="background-color: #f4f4de">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Id Orden </th>
+                            <th>Fecha</th>
+                            <th>Costo Total</th>
+                            <th>Ver Registro</th>
+
+                            <th></th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                        @if (lista != null && lista.Any())
+                        {
+                            @foreach (var N_product in lista)
+                            {  <tr>
+                                        <td>@N_product.OrdenDeProduccionId</td>
+                                        <td>@N_product.Fecha.ToShortDateString()</td>
+                                        <td>@N_product.CostoTotal</td>
+
+                                    <td><a href="/R_OrdenDeProduccion/@N_product.OrdenDeProduccionId">Ver</a></td>
+                                    </tr>
+
+                                
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6">No se encontraron resultados</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</EditForm>
+@code {
+    public string Filtro { get; set; } = "";
+    public string Criterio { get; set; } = "";
+    public List<OrdenDeProducciones> lista { get; set; } = new List<OrdenDeProducciones>();
+    public Productos? productos { get; set; }
+
+    public void Buscar()
+    {
+        switch (Filtro)
+        {
+
+            case "1":
+                lista = OrdenBLL.GetList(o => o.OrdenDeProduccionId.ToString().Contains(Criterio));
+                break;
+
+            case "2":
+                lista = OrdenBLL.GetList(o => o.Fecha.ToString().Contains(Criterio));
+                break;
+
+            case "3":
+                lista = OrdenBLL.GetList(o => o.CostoTotal.ToString().Contains(Criterio));
+                break;
+        }
+
+
+    }
+
+    protected override void OnInitialized()
+    {
+        lista = OrdenBLL.GetList(o => true);
+    }
+
+
+
+}

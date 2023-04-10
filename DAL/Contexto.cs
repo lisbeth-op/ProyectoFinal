@@ -41,6 +41,45 @@ public class Contexto : DbContext
                 }
 
         );
+
+
+        modelBuilder.Entity<MateriasPrimas>().HasData(
+            new MateriasPrimas
+            {
+                MateriaPrimaId = 1,
+                Descripcion = "azucar",
+                Nombre = "morena",
+                Precio = 50,
+                Existencia = 100
+            },
+             new MateriasPrimas
+             {
+                 MateriaPrimaId = 2,
+                 Descripcion = "Harina",
+                 Nombre = "Blanca",
+                 Precio = 50,
+                 Existencia = 100
+             },
+              new MateriasPrimas
+              {
+                  MateriaPrimaId = 3,
+                  Descripcion = "Elevadura",
+                  Nombre = "no se",
+                  Precio = 50,
+                  Existencia = 100
+              },
+               new MateriasPrimas
+               {
+                   MateriaPrimaId = 4,
+                   Descripcion = "sal",
+                   Nombre = "molida",
+                   Precio = 50,
+                   Existencia = 100
+               }
+
+            );
+
+
     }
 }
 

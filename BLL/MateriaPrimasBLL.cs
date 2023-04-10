@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Linq.Expressions;
+using DocumentFormat.OpenXml.InkML;
 using Microsoft.EntityFrameworkCore;
 
 public class MateriaPrimaBLL
@@ -47,7 +48,7 @@ public class MateriaPrimaBLL
         return _Contexto.MateriasPrimas.Where(p => p.Descripcion == Nombre).AsTracking().SingleOrDefault();
     }
 
-    public bool Eliminar(Productos materiaPrima)
+    public bool Eliminar(MateriasPrimas materiaPrima)
     {
         _Contexto.Entry(materiaPrima).State = EntityState.Deleted;
         return _Contexto.SaveChanges() > 0;
@@ -57,5 +58,5 @@ public class MateriaPrimaBLL
     {
         return _Contexto.MateriasPrimas.Where(p => p.MateriaPrimaId == id).AsTracking().SingleOrDefault();
     }
-
+    
 }
