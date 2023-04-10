@@ -16,7 +16,12 @@ public class OrdenesProduccionBLL
         Productos? producto;
         Recetas? receta;
         MateriasPrimas? materias;
-        var ordenAnterior = Buscar(orden.OrdenDeProduccionId);
+        var ordenAnterior = _contexto.OrdenDeProducciones
+            .Where(o => o.OrdenDeProduccionId == orden.OrdenDeProduccionId)
+            .Include(o => o.DetalleOrdenDeProduccions)
+            .AsNoTracking()
+            .SingleOrDefault();
+
         foreach (var detalle in ordenAnterior.DetalleOrdenDeProduccions)
         {
             producto = _contexto.Productos.Find(detalle.ProductoId);
@@ -41,7 +46,7 @@ public class OrdenesProduccionBLL
             }
 
         }
-        _contexto.Database.ExecuteSqlRaw($"Delete from DetalleOrdenDeProduccion where OrdenDeProduccionId={orden.OrdenDeProduccionId}");
+        _contexto.Entry(ordenAnterior).State = EntityState.Detached;
 
         foreach (var detalle in orden.DetalleOrdenDeProduccions)
         {
@@ -67,6 +72,9 @@ public class OrdenesProduccionBLL
             }
 
         }
+        var DetalleEliminar = _contexto.Set<DetalleOrdenDeProduccion>().Where(o => o.OrdenDeProduccionId == orden.OrdenDeProduccionId).AsNoTracking();
+        _contexto.Set<DetalleOrdenDeProduccion>().RemoveRange(DetalleEliminar);
+        _contexto.Set<DetalleOrdenDeProduccion>().AddRange(orden.DetalleOrdenDeProduccions);
         _contexto.Entry(orden).State = EntityState.Modified;
 
         result = _contexto.SaveChanges() > 0;
@@ -106,7 +114,8 @@ public class OrdenesProduccionBLL
             }
 
         }
-        _contexto.Entry(orden).State = EntityState.Added;
+        _contexto.Set<DetalleOrdenDeProduccion>().AddRange(orden.DetalleOrdenDeProduccions);
+        _contexto.OrdenDeProducciones.Add(orden);
 
         result = _contexto.SaveChanges() > 0;
         _contexto.Entry(orden).State = EntityState.Detached;
@@ -167,7 +176,7 @@ public class OrdenesProduccionBLL
                 }
 
             }
-            _contexto.Database.ExecuteSqlRaw($"Delete from DetalleOrdenDeProduccions where OrdenDeProduccionId={id}");
+            _contexto.Database.ExecuteSqlRaw($"Delete from DetalleOrdenDeProduccion where OrdenDeProduccionId={id}");
 
 
             if (ordenAnterior != null)
@@ -192,7 +201,7 @@ public class OrdenesProduccionBLL
 
         try
         {
-            lista = _contexto.OrdenDeProducciones.ToList();
+            lista = _contexto.OrdenDeProducciones.AsNoTracking().ToList();
         }
         catch (Exception)
         {
@@ -236,4 +245,3 @@ public class OrdenesProduccionBLL
 
 
 }
-

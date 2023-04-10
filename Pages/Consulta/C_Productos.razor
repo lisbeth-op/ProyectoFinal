@@ -20,8 +20,9 @@
                         <select class="form-select" @bind="Filtro">
                             <option value="1">Producto Id</option>
                             <option value="2">Descripción</option>
-                            <option value="3">Precio</option>
-                            <option value="4">Existencia</option>
+                            <option value="3">Nombre</option>
+                            <option value="4">Precio</option>
+                            <option value="5">Existencia</option>
                         </select>
                     </div>
                     <div class="col-sm-2">
@@ -36,8 +37,8 @@
                         <thead class="table-primary" >
                             <tr>
                                 <th>Producto Id</th>
-                                <th>Nombre</th>
                                 <th>Descripción</th>
+                                <th>Nombre</th>
                                 <th>Precio</th>
                                 <th>Existencia</th>
                             </tr>
@@ -49,8 +50,8 @@
                                 {
                                     <tr>
                                         <td>@producto.ProductoId</td>
-                                        <td>@producto.Nombre</td>
                                         <td>@producto.Descripcion</td>
+                                        <td>@producto.Nombre</td>
                                         <td>@producto.Precio</td>
                                         <td>@producto.Existencia</td>
                                     </tr>

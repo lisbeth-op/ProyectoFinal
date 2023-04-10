@@ -5,11 +5,12 @@
 @inject MateriaPrimaBLL materiaPrimaBLL
 @inject NotificationService notificationService
 
+
 <EditForm Model="receta" OnValidSubmit="Guardar">
 
     <div class="card">
         <div class="card-header">
-            <h3>Receta</h3>
+            <h3 style="font-family: 'Californian FB', sans-serif; font-size: 24px; font-weight: bold;">Receta</h3>
         </div>
 
         <div class="card-body">
@@ -28,7 +29,7 @@
 
             <div class="card mb-3">
                 <div class="card-header">
-                    <h4>Ingredientes</h4>
+                    <h4 style="font-family: Arial, sans-serif; font-size: 20px; font-weight: bold;">Ingredientes</h4>
                 </div>
 
                 <div class="card-body">
@@ -53,8 +54,13 @@
                             <button type="button" class="btn btn-primary" @onclick="@(()=>Agregar())">Agregar</button>
                         </div>
                     </div>
-
-                    <table class="table">
+                    <style>
+                        .custom-font {
+                            font-family: 'Californian FB', sans-serif;
+                            font-size: 14px;
+                        }
+                    </style>
+                    <table class="table custom-font">
                         <thead>
                             <tr>
                                 <th>Producto Id</th>
@@ -90,7 +96,7 @@
                     </table>
 
 
-                    <h3>A Producir </h3>
+                    <h2 style="font-family: 'Californian FB', sans-serif; font-size: 24px; font-weight: bold;">Categorias</h2>
 
                     <div class="row">
                         <div class="col-6">
@@ -154,10 +160,10 @@
                      });
             return;
         }
-        var productoEncontrado = ProductosBLL.Buscar(receta.ProductoId);
+        @*var productoEncontrado = ProductosBLL.Buscar(receta.ProductoId);
         if (productoEncontrado!=null)
         {
-            if (productoEncontrado.RecetaId !=0)
+            if (productoEncontrado != null && productoEncontrado.RecetaId != 0)
             {
                 ShowNotification(
                 new NotificationMessage
@@ -171,7 +177,7 @@
             }
             
             
-        }else
+        }
         {
             ShowNotification(
                 new NotificationMessage
@@ -180,7 +186,7 @@
                         Summary = "El Producto No se encuentra"
                     });
             return;
-        }
+        }*@else
         if (RecetasBLL.Guardar(receta))
         {
             Nuevo();

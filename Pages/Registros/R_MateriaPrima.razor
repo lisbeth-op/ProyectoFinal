@@ -1,4 +1,5 @@
 ﻿@page "/R_MateriaPrima"
+@page "/R_MateriaPrima/{MateriaPrimaId:int}"
 
 @inject MateriaPrimaBLL materiaPrimaBLL
 
@@ -7,9 +8,9 @@
 <EditForm Model="materia" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
 
-    <div class="card">
+    <div class="card" style="max-width: 600px; margin: 0 auto;">
         <div class="card-header">
-            <h3>Registro de Materia Prima</h3>
+            <h3 class="text-center">Registro de Materia Prima</h3>
         </div>
 
         <div class="card-body">
@@ -19,49 +20,48 @@
                     <input type="number" id="txtId" class="form-control" @bind-value="materia.MateriaPrimaId">
                 </div>
 
-                <div class="col-sm-9">
+                <div class="col-3 d-flex align-items-end">
                     <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
                 </div>
             </div>
 
-             <div class="col-sm-6">
-                <label for="txtConcepto" class="form-label">Nombre:</label>
-                <input type="text" id="txtConcepto" class="form-control" @bind-value="materia.Nombre">
-                <ValidationMessage For="@(() => materia.Nombre)" />
-            </div>
-         
-            <div class="col-sm-6">
-                <label for="txtConcepto" class="form-label">Descripción:</label>
-                <input type="text" id="txtConcepto" class="form-control" @bind-value="materia.Descripcion">
-                <ValidationMessage For="@(() => materia.Descripcion)" />
-            </div>
-         
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <label for="txtConcepto" class="form-label">Nombre:</label>
+                    <input type="text" id="txtConcepto" class="form-control" @bind-value="materia.Nombre">
+                    <ValidationMessage For="@(() => materia.Nombre)" />
+                </div>
 
-            <div class="col-sm-6">
-                <label for="txtConcepto" class="form-label">Precio:</label>
-                <input type="text" id="txtConcepto" class="form-control" @bind-value="materia.Precio">
-                <ValidationMessage For="@(() => materia.Precio)" />
-            </div>
-            <div class="col-sm-6">
-                <label for="txtConcepto" class="form-label">Existencia:</label>
-                <input type="text" id="txtConcepto" class="form-control" @bind-value="materia.Existencia">
-                <ValidationMessage For="@(() => materia.Existencia)" />
-            </div>
-
-
-
-     
-
-                <div class="card-footer text-centerc">
-                    <button type="button" class="btn btn-primary mr-2" @onclick="Nuevo"> Nuevo </button>
-                    <button type="submit" name="BtnGuardar" id="BtnGuardar" class="btn btn-success mr-2"> Guardar </button>
-                    <button type="button" class="btn btn-danger mr-2" @onclick="Eliminar">
-                        Eliminar
-                    </button>
+                <div class="col-sm-6">
+                    <label for="txtConcepto" class="form-label">Descripción:</label>
+                    <input type="text" id="txtConcepto" class="form-control" @bind-value="materia.Descripcion">
+                    <ValidationMessage For="@(() => materia.Descripcion)" />
                 </div>
             </div>
-     </div
+
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <label for="txtConcepto" class="form-label">Precio:</label>
+                    <input type="text" id="txtConcepto" class="form-control" @bind-value="materia.Precio">
+                    <ValidationMessage For="@(() => materia.Precio)" />
+                </div>
+
+                <div class="col-sm-6">
+                    <label for="txtConcepto" class="form-label">Existencia:</label>
+                    <input type="text" id="txtConcepto" class="form-control" @bind-value="materia.Existencia">
+                    <ValidationMessage For="@(() => materia.Existencia)" />
+                </div>
+            </div>
+
+            <div class="card-footer text-center">
+                <button type="button" class="btn btn-primary mr-2" @onclick="Nuevo">Nuevo</button>
+                <button type="submit" name="BtnGuardar" id="BtnGuardar" class="btn btn-success mr-2">Guardar</button>
+                <button type="button" class="btn btn-danger mr-2" @onclick="Eliminar">Eliminar</button>
+            </div>
+        </div>
+    </div>
 </EditForm>
+
 
 
 
