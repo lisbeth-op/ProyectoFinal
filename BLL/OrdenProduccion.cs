@@ -125,8 +125,11 @@ public class OrdenesProduccionBLL
 
     public OrdenDeProducciones? Buscar(int ordenId)
     {
-        return _contexto.OrdenDeProducciones.Include(r => r.DetalleOrdenDeProduccions)
-                                 .SingleOrDefault(r => r.OrdenDeProduccionId == ordenId);
+        return _contexto.OrdenDeProducciones
+            .Where(o => o.OrdenDeProduccionId == ordenId)
+            .Include(o => o.DetalleOrdenDeProduccions)
+            .AsNoTracking()
+            .SingleOrDefault();
     }
 
     public bool Eliminar(int id)
