@@ -2,7 +2,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    background-color: ;
+    background-color: #e6d4c1;
 }
 
 main {
@@ -10,11 +10,11 @@ main {
 }
 
 .sidebar {
-    background-image: linear-gradient(#E3D687, rgb(225, 213, 155) 0%, rgb(225, 213, 155) 70%);
+    background-image: linear-gradient(rgb(207, 180, 126), rgb(225, 213, 155) 0%, rgb(153, 119, 90) 70%);
 }
 
 .top-row {
-    background-color: #e1d59b;
+    background-color: #99775a;
     border-bottom: 1px solid #e3d984;
     justify-content: flex-end;
     height: 3.5rem;

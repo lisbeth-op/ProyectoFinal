@@ -22,6 +22,7 @@
                             <option value="2">Descripción</option>
                             <option value="3">Precio</option>
                             <option value="4">Existencia</option>
+                            <option value="5">Fecha</option>
                         </select>
                     </div>
                     <div class="col-sm-2">
@@ -36,6 +37,7 @@
                         <thead class="table-primary">
                             <tr>
                                 <th>Materia Prima Id</th>
+                                <th>Fecha</th>
                                 <th>Nombre</th>
                                 <th>Descripción</th>
                                 <th>Precio</th>
@@ -50,6 +52,7 @@
                                 {
                                     <tr>
                                         <td>@producto.MateriaPrimaId</td>
+                                        <td>@producto.Fecha.ToShortDateString()</td>
                                         <td>@producto.Nombre</td>
                                         <td>@producto.Descripcion</td>
                                         <td>@producto.Precio</td>
@@ -61,7 +64,7 @@
                             else
                             {
                                 <tr>
-                                    <td colspan="5">No se encontraron productos</td>
+                                    <td colspan="">No se encontraron productos</td>
                                 </tr>
                             }
                         </tbody>
@@ -87,24 +90,28 @@
         switch (Filtro)
         {
             case "1":
-                lista = MateriaPrimaBLL.GetList(p => p.MateriaPrimaId.ToString().Contains(Criterio));
+                lista = MateriaPrimaBLL.GetList(p => p.MateriaPrimaId.Equals(Convert.ToInt32(Criterio)));
+                break;
+
+            case "2":
+                lista = MateriaPrimaBLL.GetList(p => p.Fecha.ToString().Contains(Criterio));
                 break;
 
             
 
-            case "2":
-                lista = MateriaPrimaBLL.GetList(n => n.Nombre.ToString().Contains(Criterio));
+            case "3":
+                lista = MateriaPrimaBLL.GetList(n => n.Nombre.Contains(Criterio));
                 break
                 
-                ;case "3":
+                ;case "4":
                 lista = MateriaPrimaBLL.GetList(d => (d.Descripcion ?? "").Contains(Criterio));
                 break;
 
-            case "4":
+            case "5":
                 lista = MateriaPrimaBLL.GetList(p => p.Precio.ToString().Contains(Criterio));
                 break;
 
-            case "5":
+            case "6":
                 lista = MateriaPrimaBLL.GetList(e => e.Existencia.ToString().Contains(Criterio));
                 break;
         }

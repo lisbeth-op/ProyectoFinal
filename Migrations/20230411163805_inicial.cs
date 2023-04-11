@@ -20,9 +20,10 @@ namespace PFinal.Migrations
                     MateriaPrimaId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Nombre = table.Column<string>(type: "TEXT", nullable: false),
-                    Descripcion = table.Column<string>(type: "TEXT", nullable: true),
+                    Descripcion = table.Column<string>(type: "TEXT", nullable: false),
                     Precio = table.Column<double>(type: "REAL", nullable: false),
-                    Existencia = table.Column<int>(type: "INTEGER", nullable: false)
+                    Existencia = table.Column<int>(type: "INTEGER", nullable: false),
+                    Fecha = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,8 +52,9 @@ namespace PFinal.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     RecetaId = table.Column<int>(type: "INTEGER", nullable: false),
                     Nombre = table.Column<string>(type: "TEXT", nullable: false),
-                    Descripcion = table.Column<string>(type: "TEXT", nullable: true),
+                    Descripcion = table.Column<string>(type: "TEXT", nullable: false),
                     Precio = table.Column<double>(type: "REAL", nullable: false),
+                    Fecha = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Existencia = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -66,7 +68,8 @@ namespace PFinal.Migrations
                 {
                     RecetaId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ProductoId = table.Column<int>(type: "INTEGER", nullable: false)
+                    ProductoId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Fecha = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,23 +120,23 @@ namespace PFinal.Migrations
 
             migrationBuilder.InsertData(
                 table: "MateriasPrimas",
-                columns: new[] { "MateriaPrimaId", "Descripcion", "Existencia", "Nombre", "Precio" },
+                columns: new[] { "MateriaPrimaId", "Descripcion", "Existencia", "Fecha", "Nombre", "Precio" },
                 values: new object[,]
                 {
-                    { 1, "azucar", 100, "morena", 50.0 },
-                    { 2, "Harina", 100, "Blanca", 50.0 },
-                    { 3, "Elevadura", 100, "no se", 50.0 },
-                    { 4, "sal", 100, "molida", 50.0 }
+                    { 1, "azucar", 100, new DateTime(2023, 4, 11, 12, 38, 4, 997, DateTimeKind.Local).AddTicks(6371), "morena", 50.0 },
+                    { 2, "Harina", 100, new DateTime(2023, 4, 11, 12, 38, 4, 997, DateTimeKind.Local).AddTicks(6375), "Blanca", 50.0 },
+                    { 3, "Elevadura", 100, new DateTime(2023, 4, 11, 12, 38, 4, 997, DateTimeKind.Local).AddTicks(6377), "no se", 50.0 },
+                    { 4, "sal", 100, new DateTime(2023, 4, 11, 12, 38, 4, 997, DateTimeKind.Local).AddTicks(6378), "molida", 50.0 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Productos",
-                columns: new[] { "ProductoId", "Descripcion", "Existencia", "Nombre", "Precio", "RecetaId" },
+                columns: new[] { "ProductoId", "Descripcion", "Existencia", "Fecha", "Nombre", "Precio", "RecetaId" },
                 values: new object[,]
                 {
-                    { 1, "Dulce de leche", 100, "Bizcocho", 500.0, 0 },
-                    { 2, "De agua", 100, "Pan", 50.0, 0 },
-                    { 3, "De coco", 100, "Galletas", 50.0, 0 }
+                    { 1, "Dulce de leche", 100, new DateTime(2023, 4, 11, 12, 38, 4, 997, DateTimeKind.Local).AddTicks(6224), "Bizcocho", 500.0, 0 },
+                    { 2, "De agua", 100, new DateTime(2023, 4, 11, 12, 38, 4, 997, DateTimeKind.Local).AddTicks(6236), "Pan", 50.0, 0 },
+                    { 3, "De coco", 100, new DateTime(2023, 4, 11, 12, 38, 4, 997, DateTimeKind.Local).AddTicks(6238), "Galletas", 50.0, 0 }
                 });
 
             migrationBuilder.CreateIndex(

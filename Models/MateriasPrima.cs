@@ -10,11 +10,12 @@ public class MateriasPrimas
     [Required(ErrorMessage = "Campo obligatorio.")]
     public string? Descripcion { get; set; }
 
-    [Required(ErrorMessage = "Campo obligatorio.")]
+    [Required(ErrorMessage = "Se requiere un precio.")]
     public double Precio { get; set; }
 
     [Required(ErrorMessage = "Campo obligatorio.")]
     public int Existencia { get; set; }
+    public DateTime Fecha { get; set; } = DateTime.Now;
 
 
 }

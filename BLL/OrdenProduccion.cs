@@ -28,7 +28,11 @@ public class OrdenesProduccionBLL
             producto = _contexto.Productos.Find(detalle.ProductoId);
             if (producto != null)
             {
-                receta = _contexto.Recetas.Find(producto.ProductoId);
+                receta = _contexto.Recetas
+                   .Where(o => o.ProductoId == producto.ProductoId)
+                   .Include(o => o.detalleRecetas)
+                   .AsNoTracking()
+                   .SingleOrDefault();
                 if (receta != null)
                 {
                     foreach (var recetaDetalle in receta.detalleRecetas)
@@ -54,7 +58,11 @@ public class OrdenesProduccionBLL
             producto = _contexto.Productos.Find(detalle.ProductoId);
             if (producto != null)
             {
-                receta = _contexto.Recetas.Find(producto.ProductoId);
+                receta = _contexto.Recetas
+                   .Where(o => o.ProductoId == producto.ProductoId)
+                   .Include(o => o.detalleRecetas)
+                   .AsNoTracking()
+                   .SingleOrDefault();
                 if (receta != null)
                 {
                     foreach (var recetaDetalle in receta.detalleRecetas)
@@ -90,26 +98,40 @@ public class OrdenesProduccionBLL
         Productos? producto;
         Recetas? receta;
         MateriasPrimas? materias;
+
         foreach (var detalle in orden.DetalleOrdenDeProduccions)
         {
-            producto = _contexto.Productos.Find(detalle.ProductoId);
+            producto = _contexto.Productos.AsNoTracking().FirstOrDefault(o => o.ProductoId == detalle.ProductoId);
+
             if (producto != null)
             {
-                receta = _contexto.Recetas.Find(producto.ProductoId);
+                Console.WriteLine($"///////////ESTE ESS EL PRODUCTO ID: {producto.ProductoId}");
+                receta = _contexto.Recetas
+                    .Where(o => o.ProductoId == producto.ProductoId)
+                    .Include(o => o.detalleRecetas)
+                    .AsNoTracking()
+                    .SingleOrDefault();
                 if (receta != null)
                 {
+                    Console.WriteLine($"///////////ESTA ES LA RECETA ID: {receta.RecetaId}");
                     foreach (var recetaDetalle in receta.detalleRecetas)
                     {
-                        materias = _contexto.MateriasPrimas.Find(recetaDetalle.MateriaPrimaId);
+                        materias = _contexto.MateriasPrimas.AsNoTracking().FirstOrDefault(o => o.MateriaPrimaId == recetaDetalle.MateriaPrimaId);
                         if (materias != null)
                         {
+                            Console.WriteLine($"///////////ESTA ES LA MATERIA PRIMA  ID: {materias.MateriaPrimaId}");
                             materias.Existencia -= recetaDetalle.Cantidad;
                             _contexto.Entry(materias).State = EntityState.Modified;
+                            _contexto.SaveChanges();
+                            _contexto.Entry(materias).State = EntityState.Detached;
                         }
                     }
+                    _contexto.Entry(receta).State = EntityState.Detached;
                 }
                 producto.Existencia += detalle.Cantidad;
                 _contexto.Entry(producto).State = EntityState.Modified;
+                _contexto.SaveChanges();
+                _contexto.Entry(producto).State = EntityState.Detached;
 
 
             }
@@ -158,7 +180,12 @@ public class OrdenesProduccionBLL
                 producto = _contexto.Productos.Find(detalle.ProductoId);
                 if (producto != null)
                 {
-                    receta = _contexto.Recetas.Find(producto.ProductoId);
+                    receta = _contexto.Recetas
+                   .Where(o => o.ProductoId == producto.ProductoId)
+                   .Include(o => o.detalleRecetas)
+                   .AsNoTracking()
+                   .SingleOrDefault();
+
                     if (receta != null)
                     {
                         foreach (var recetaDetalle in receta.detalleRecetas)

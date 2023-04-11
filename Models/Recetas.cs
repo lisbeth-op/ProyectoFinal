@@ -8,7 +8,7 @@ public class Recetas
     public int RecetaId { get; set; }
     [Required]
     public int ProductoId { get; set; }
-
+    public DateTime Fecha { get; set; } = DateTime.Now;
     [ForeignKey("RecetaId")]
     public List<DetalleRecetas> detalleRecetas { get; set; } = new List<DetalleRecetas>();
 

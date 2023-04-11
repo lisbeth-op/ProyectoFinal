@@ -7,31 +7,32 @@
 
 
 <EditForm Model="receta" OnValidSubmit="Guardar">
-
     <div class="card">
         <div class="card-header">
             <h3 style="font-family: 'Californian FB', sans-serif; font-size: 24px; font-weight: bold;">Receta</h3>
         </div>
-
         <div class="card-body">
             <div class="form-group row">
                 <div class="col-sm-3">
                     <label for="txtId" class="form-label">Id:</label>
                     <InputNumber class="form-control" @bind-Value="receta.RecetaId"></InputNumber>
                 </div>
-
                 <div class="col-3 d-flex align-items-end">
                     <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+               
+            
                 </div>
+                <div class="form-group">
+                    <label for="txtConcepto" class="form-label">Fecha de Creacion:</label>
+                    <InputDate class="form-control" @bind-Value="receta.Fecha" />
+                    <ValidationMessage For="@(() => receta.Fecha)" />
+                </div>
+
             </div>
-
-
-
             <div class="card mb-3">
                 <div class="card-header">
                     <h4 style="font-family: Arial, sans-serif; font-size: 20px; font-weight: bold;">Ingredientes</h4>
                 </div>
-
                 <div class="card-body">
                     <div class="form-group row">
                         <div class="col-sm-4">
@@ -43,13 +44,11 @@
                                 }
                             </InputSelect>
                         </div>
-
                         <div class="col-sm-4">
                             <label for="txtEjemplo" class="form-label">Cantidad:</label>
                             <InputNumber class="form-control" @bind-Value="detalleReceta.Cantidad"></InputNumber>
                             <ValidationMessage For="@(() => detalleReceta.Cantidad)" />
                         </div>
-
                         <div class="col-sm-4 d-flex align-items-end">
                             <button type="button" class="btn btn-primary" @onclick="@(()=>Agregar())">Agregar</button>
                         </div>
@@ -64,8 +63,8 @@
                         <thead>
                             <tr>
                                 <th>Producto Id</th>
-                                <th>Nombre </th>
-                                <th>Descripci&oacute;n</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
                                 <th>Cantidad</th>
                                 <th></th>
                             </tr>
@@ -175,8 +174,8 @@
 
 
             }
-            
-            
+
+
         }else
         {
             ShowNotification(

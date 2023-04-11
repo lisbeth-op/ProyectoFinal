@@ -55,7 +55,7 @@ public class ProductosBLL
 
     public Productos? Buscar(int id)
     {
-        return _Contexto.Productos.Where(p => p.ProductoId == id).AsTracking().SingleOrDefault();
+        return _Contexto.Productos.AsNoTracking().FirstOrDefault(o=>o.ProductoId==id);
     }
 
 }

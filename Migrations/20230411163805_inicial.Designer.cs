@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace PFinal.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20230410032541_inicial")]
+    [Migration("20230411163805_inicial")]
     partial class inicial
     {
         /// <inheritdoc />
@@ -70,10 +70,14 @@ namespace PFinal.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Descripcion")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Existencia")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -92,6 +96,7 @@ namespace PFinal.Migrations
                             MateriaPrimaId = 1,
                             Descripcion = "azucar",
                             Existencia = 100,
+                            Fecha = new DateTime(2023, 4, 11, 12, 38, 4, 997, DateTimeKind.Local).AddTicks(6371),
                             Nombre = "morena",
                             Precio = 50.0
                         },
@@ -100,6 +105,7 @@ namespace PFinal.Migrations
                             MateriaPrimaId = 2,
                             Descripcion = "Harina",
                             Existencia = 100,
+                            Fecha = new DateTime(2023, 4, 11, 12, 38, 4, 997, DateTimeKind.Local).AddTicks(6375),
                             Nombre = "Blanca",
                             Precio = 50.0
                         },
@@ -108,6 +114,7 @@ namespace PFinal.Migrations
                             MateriaPrimaId = 3,
                             Descripcion = "Elevadura",
                             Existencia = 100,
+                            Fecha = new DateTime(2023, 4, 11, 12, 38, 4, 997, DateTimeKind.Local).AddTicks(6377),
                             Nombre = "no se",
                             Precio = 50.0
                         },
@@ -116,6 +123,7 @@ namespace PFinal.Migrations
                             MateriaPrimaId = 4,
                             Descripcion = "sal",
                             Existencia = 100,
+                            Fecha = new DateTime(2023, 4, 11, 12, 38, 4, 997, DateTimeKind.Local).AddTicks(6378),
                             Nombre = "molida",
                             Precio = 50.0
                         });
@@ -145,10 +153,14 @@ namespace PFinal.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Descripcion")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Existencia")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -170,6 +182,7 @@ namespace PFinal.Migrations
                             ProductoId = 1,
                             Descripcion = "Dulce de leche",
                             Existencia = 100,
+                            Fecha = new DateTime(2023, 4, 11, 12, 38, 4, 997, DateTimeKind.Local).AddTicks(6224),
                             Nombre = "Bizcocho",
                             Precio = 500.0,
                             RecetaId = 0
@@ -179,6 +192,7 @@ namespace PFinal.Migrations
                             ProductoId = 2,
                             Descripcion = "De agua",
                             Existencia = 100,
+                            Fecha = new DateTime(2023, 4, 11, 12, 38, 4, 997, DateTimeKind.Local).AddTicks(6236),
                             Nombre = "Pan",
                             Precio = 50.0,
                             RecetaId = 0
@@ -188,6 +202,7 @@ namespace PFinal.Migrations
                             ProductoId = 3,
                             Descripcion = "De coco",
                             Existencia = 100,
+                            Fecha = new DateTime(2023, 4, 11, 12, 38, 4, 997, DateTimeKind.Local).AddTicks(6238),
                             Nombre = "Galletas",
                             Precio = 50.0,
                             RecetaId = 0
@@ -199,6 +214,9 @@ namespace PFinal.Migrations
                     b.Property<int>("RecetaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("ProductoId")
                         .HasColumnType("INTEGER");

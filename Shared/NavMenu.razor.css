@@ -1,10 +1,10 @@
 .navbar-toggler {
-    background-color: #E3CF87;
+    background-color: rgb(153, 119, 90);
 }
 
 .top-row {
     height: 3.5rem;
-    background-color: #E3CF87;
+    background-color: rgb(153, 119, 90);
 }
 
 .navbar-brand {
@@ -41,7 +41,7 @@
     }
 
         .nav-item ::deep a.active {
-            background-color: rgb(179, 161, 89);
+            background-color: rgb(242, 234, 201);
             color: white;
         }
 

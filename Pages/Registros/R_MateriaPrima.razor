@@ -17,13 +17,19 @@
             <div class="form-group row">
                 <div class="col-sm-3">
                     <label for="txtId" class="form-label">Id:</label>
-                    <input type="number" id="txtId" class="form-control" @bind-value="materia.MateriaPrimaId">
+                    <InputNumber class="form-control" @bind-Value="materia.MateriaPrimaId"/>
                 </div>
 
                 <div class="col-3 d-flex align-items-end">
                     <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
                 </div>
             </div>
+            <div class="form-group">
+                <label for="txtConcepto" class="form-label">Fecha de Creacion:</label>
+                <InputDate class="form-control" @bind-Value="materia.Fecha"/>
+                <ValidationMessage For="@(() => materia.Nombre)" />
+            </div>
+
 
             <div class="form-group row">
                 <div class="col-sm-6">
@@ -42,7 +48,7 @@
             <div class="form-group row">
                 <div class="col-sm-6">
                     <label for="txtConcepto" class="form-label">Precio:</label>
-                    <input type="text" id="txtConcepto" class="form-control" @bind-value="materia.Precio">
+                    <input class="form-control" @bind-value="materia.Precio">
                     <ValidationMessage For="@(() => materia.Precio)" />
                 </div>
 
@@ -93,7 +99,7 @@
         var ProductoEncontrado = materiaPrimaBLL.Buscar(materia.MateriaPrimaId);
         if (ProductoEncontrado != null)
             this.materia = ProductoEncontrado;
-            else
+        else
         {
             ShowNotification(
                    new NotificationMessage
@@ -105,9 +111,9 @@
         }
 
 
-        }
-        
-    
+    }
+
+
     void Nuevo()
     {
         this.materia = new MateriasPrimas();
@@ -119,29 +125,29 @@
         if (materiaPrimaBLL.Guardar(this.materia))
 
             Nuevo();
-             ShowNotification(
-               new NotificationMessage
-                   {
-                       Severity = NotificationSeverity.Success,
-                       Summary = "Guardado correctamente"
-                   });
+        ShowNotification(
+          new NotificationMessage
+              {
+                  Severity = NotificationSeverity.Success,
+                  Summary = "Guardado correctamente"
+              });
     }
 
     void Eliminar()
     {
         if (materiaPrimaBLL.Eliminar(this.materia))
-        {   
+        {
             Nuevo();
-             ShowNotification(
-               new NotificationMessage
-                   {
-                       Severity = NotificationSeverity.Success,
-                       Summary = "Eliminado correctamente"
-                   });
+            ShowNotification(
+              new NotificationMessage
+                  {
+                      Severity = NotificationSeverity.Success,
+                      Summary = "Eliminado correctamente"
+                  });
         }
-           
+
     }
-     void ShowNotification(NotificationMessage message)
+    void ShowNotification(NotificationMessage message)
     {
         notificationService.Notify(message);
     }

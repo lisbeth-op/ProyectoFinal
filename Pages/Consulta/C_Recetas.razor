@@ -12,17 +12,41 @@
                 <h3 class="text-primary text-center">Consulta Receta</h3>
             </div>
             <div class="card-body">
-   
 
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <label class="form-label">Criterio</label>
+                        <input type="text" class="form-control" @bind="Criterio">
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="form-label">Filtro</label>
+                        <select class="form-select" @bind="Filtro">
+                            <option value="1">Id Receta</option>
+                            <option value="2">Fecha</option>
+                            
+                        </select>
+                    </div>
+                       
+                       
+                  
+                </div>
+                <div class="col-sm-2">
+                    <label class="form-label">&nbsp;</label>
+                    <button type="button" class="btn btn-primary w-100" @onclick="Buscar">
+                        <i class="bi bi-search"></i> Buscar
+                    </button>
+                </div>
+            </div>
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered" style="background-color: #f4f4de">
                         <thead class="table-primary">
                         <tr>
                             <th>Id Producto</th>
+                            <th>Fecha</th>
                             <th>Producto</th>
+                            <th>Nombre</th>
+
                             <th>Ver Registro</th>
-                            
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,6 +60,7 @@
                                 {
                                     <tr>
                                         <td>@N_product.RecetaId</td>
+                                        <td>@N_product.Fecha</td>
                                         <td>@productos.Nombre</td>
 
                                         <td><a href="/R_Recetas/@N_product.RecetaId">Ver</a></td>
@@ -50,7 +75,7 @@
             </div>
         </div>
     </div>
-    </div>
+    
 </EditForm>
 @code {
     public string Filtro { get; set; } = "";
@@ -63,8 +88,13 @@
         switch (Filtro)
         {
 
+           
             case "1":
-                lista = RecetaBLL.GetList(o => o.ProductoId.ToString().Contains(Criterio));
+                lista = RecetaBLL.GetList(o => o.RecetaId.Equals(Convert.ToInt32(Criterio)));
+                break; 
+
+                case "2":
+                lista = RecetaBLL.GetList(o => o.Fecha.ToString().Contains(Criterio));
                 break;
         }
 

@@ -1,5 +1,6 @@
 ﻿@inject ProductosBLL ProductosBLL
 @page "/productos"
+@page "/productos/{ProductoId:int}"
 @inject NotificationService notificationService
 
 <EditForm Model="producto" OnValidSubmit="Guardar">
@@ -20,6 +21,13 @@
                 <div class="col-3 d-flex align-items-end">
                     <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
                 </div>
+
+                <div class="form-group">
+                    <label for="txtConcepto" class="form-label">Fecha de Creacion:</label>
+                    <InputDate class="form-control" @bind-Value="producto.Fecha" />
+                    <ValidationMessage For="@(() => producto.Fecha)" />
+                </div>
+
             </div>
 
             <div class="form-group">
@@ -97,9 +105,6 @@
                            Summary = "ID no existe"
                        }
                            );
-            
-
-
         }
         }
 
@@ -113,17 +118,14 @@
     void Guardar()
     {
         if (ProductosBLL.Guardar(this.producto))
-   
-             Nuevo();
-             if (ProductosBLL.Eliminar(this.producto))
-          Nuevo();
+    
            ShowNotification(
                new NotificationMessage
                    {
-                       Severity = NotificationSeverity.Error,
+                       Severity = NotificationSeverity.Success,
                        Summary = "Guardado correctamente"
                    });
-           
+        Nuevo();
     }
 
     void Eliminar()

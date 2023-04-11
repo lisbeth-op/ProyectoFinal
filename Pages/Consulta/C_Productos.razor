@@ -19,10 +19,11 @@
                         <label class="form-label">Filtro</label>
                         <select class="form-select" @bind="Filtro">
                             <option value="1">Producto Id</option>
-                            <option value="2">Descripción</option>
-                            <option value="3">Nombre</option>
-                            <option value="4">Precio</option>
-                            <option value="5">Existencia</option>
+                            <option value="2">Fecha</option>
+                            <option value="3">Descripción</option>
+                            <option value="4">Nombre</option>
+                            <option value="5">Precio</option>
+                            <option value="6">Existencia</option>
                         </select>
                     </div>
                     <div class="col-sm-2">
@@ -37,10 +38,12 @@
                         <thead class="table-primary" >
                             <tr>
                                 <th>Producto Id</th>
-                                <th>Descripción</th>
+                                <th>Fecha</th>
                                 <th>Nombre</th>
+                                <th>Descripción</th>
                                 <th>Precio</th>
                                 <th>Existencia</th>
+                                <th>Ver Registro</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -50,17 +53,19 @@
                                 {
                                     <tr>
                                         <td>@producto.ProductoId</td>
-                                        <td>@producto.Descripcion</td>
+                                        <td>@producto.Fecha.ToShortDateString()</td>
                                         <td>@producto.Nombre</td>
+                                        <td>@producto.Descripcion</td>
                                         <td>@producto.Precio</td>
                                         <td>@producto.Existencia</td>
+                                        <td><a href="/productos/@producto.ProductoId">Ver</a></td>
                                     </tr>
                                 }
                             }
                             else
                             {
                                 <tr>
-                                    <td colspan="5">No se encontraron productos</td>
+                                    <td colspan="7">No se encontraron productos</td>
                                 </tr>
                             }
                         </tbody>
@@ -86,22 +91,26 @@
         switch (Filtro)
         {
             case "1":
-                lista = productosBLL.GetList(p => p.ProductoId.ToString().Contains(Criterio));
-                break;
-
-            case "2":
-                lista = productosBLL.GetList(d => (d.Descripcion ?? "").Contains(Criterio));
+                lista = productosBLL.GetList(p => p.ProductoId.Equals(Convert.ToInt32(Criterio)));
+                break; 
+                
+                case "2":
+                lista = productosBLL.GetList(p => p.Fecha.ToString().Contains(Criterio));
                 break;
 
             case "3":
-                lista = productosBLL.GetList(n => n.Nombre.ToString().Contains(Criterio));
+                lista = productosBLL.GetList(n => n.Nombre.Contains(Criterio));
+                break;
+            case "4":
+                lista = productosBLL.GetList(d => (d.Descripcion ?? "").Contains(Criterio));
                 break;
 
-            case "4":
+
+            case "5":
                 lista = productosBLL.GetList(p => p.Precio.ToString().Contains(Criterio));
                 break;
 
-            case "5":
+            case "6":
                 lista = productosBLL.GetList(e => e.Existencia.ToString().Contains(Criterio));
                 break;
         }

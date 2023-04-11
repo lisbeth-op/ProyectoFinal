@@ -6,14 +6,16 @@
 }
 
 <h1>@ViewData["Title"]</h1>
-<body style="background-color: #F0EBDC;">
+<body style="background-color: #99775a;">
 
     <div class="row justify-content-center align-items-center" style="height: 75vh;">
+
         <div class="col-md-4">
         <section>
             <form id="account" method="post">
-                    <h2 style="color: #907204 ;">Área de Producción.</h2>
+                    <h2 style="color: blanchedalmond;">Área de Producción.</h2>
                 <hr />
+
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 <div class="form-floating mb-3">
                     <input asp-for="Input.Email" class="form-control" autocomplete="Usuario" aria-required="true" placeholder="name@example.com" />
@@ -26,12 +28,14 @@
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
                 <div>
-                        <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary" style="background-color: #907204 ; color: white;">Iniciar</button>
+                        <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary" style="background-color: blanchedalmond ; color: black;">Iniciar</button>
                 </div>
 
             </form>
+                <img src="https://images.vexels.com/media/users/3/182579/isolated/preview/81d97f939dc5d0c3ad370eea66cbb3cb-imagen-de-pan-de-panaderia-plana.png" style="margin-left: 150px;" />
 
         </section>
+
     </div>
 </div>
 </body>
