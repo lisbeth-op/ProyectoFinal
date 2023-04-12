@@ -27,17 +27,7 @@
                         <input type="text" class="form-control" @bind="Criterio" />
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-3">
-                        <label class="form-label">Desde </label>
-                        <InputDate class="form-control" @bind-Value="Fecha1" />
-                    </div>
 
-
-                    <div class="col-3">
-                        <label class="form-label">Hasta</label>
-                        <InputDate class="form-control" @bind-Value="Fecha2" />
-                    </div>
                     <div class="col-4">
                         <label>&nbsp;</label>
                         <button class="btn btn-primary form-control" @onclick="@Buscar">Buscar</button>
@@ -74,14 +64,14 @@
                         else
                         {
                             <tr>
-                                <td colspan="6">No se encontraron resultados</td>
+                                <td colspan="4">No se encontraron resultados</td>
                             </tr>
                         }
                     </tbody>
                 </table>
             </div>
         </div>
-    </div>
+    
 </EditForm>
 @code {
     public string Filtro { get; set; } = "";

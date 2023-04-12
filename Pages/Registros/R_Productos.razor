@@ -131,13 +131,15 @@
     void Eliminar()
     {
         if (ProductosBLL.Eliminar(this.producto))
-          Nuevo();
-           ShowNotification(
-               new NotificationMessage
-                   {
-                       Severity = NotificationSeverity.Error,
-                       Summary = "Eliminado correctamente"
-                   });
+        {
+            Nuevo();
+            ShowNotification(
+                new NotificationMessage
+                    {
+                        Severity = NotificationSeverity.Error,
+                        Summary = "Eliminado correctamente"
+                    });
+        }
            
     }
 

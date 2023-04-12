@@ -18,11 +18,13 @@
                     <div class="col-sm-2">
                         <label class="form-label">Filtro</label>
                         <select class="form-select" @bind="Filtro">
+                            <option value="">-- Seleccione una opción --</option>
                             <option value="1">Producto Id</option>
-                            <option value="2">Descripción</option>
-                            <option value="3">Precio</option>
-                            <option value="4">Existencia</option>
-                            <option value="5">Fecha</option>
+                            <option value="2">Fecha</option>
+                            <option value="3">Nombre</option>
+                            <option value="4">Descripción</option>
+                            <option value="5">Precio</option>
+                            <option value="6">Existencia</option>
                         </select>
                     </div>
                     <div class="col-sm-2">
@@ -55,7 +57,7 @@
                                         <td>@producto.Fecha.ToShortDateString()</td>
                                         <td>@producto.Nombre</td>
                                         <td>@producto.Descripcion</td>
-                                        <td>@producto.Precio</td>
+                                        <td>$@producto.Precio </td>
                                         <td>@producto.Existencia</td>
                                         <td><a href="/R_MateriaPrima/@producto.MateriaPrimaId">Ver</a></td>
                                     </tr>
@@ -64,7 +66,7 @@
                             else
                             {
                                 <tr>
-                                    <td colspan="">No se encontraron productos</td>
+                                    <td colspan="7">No se encontraron productos</td>
                                 </tr>
                             }
                         </tbody>

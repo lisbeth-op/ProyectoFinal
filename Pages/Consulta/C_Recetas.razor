@@ -21,6 +21,7 @@
                     <div class="col-sm-2">
                         <label class="form-label">Filtro</label>
                         <select class="form-select" @bind="Filtro">
+                            <option value="">-- Seleccione una opción --</option>
                             <option value="1">Id Receta</option>
                             <option value="2">Fecha</option>
                             
@@ -43,10 +44,9 @@
                         <tr>
                             <th>Id Producto</th>
                             <th>Fecha</th>
-                            <th>Producto</th>
-                           
-
-                            <th>Ver Registro</th>
+                           <th>Producto</th>
+                        
+                           <th>Ver Registro</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,14 +60,21 @@
                                 {
                                     <tr>
                                         <td>@N_product.RecetaId</td>
-                                        <td>@N_product.Fecha</td>
+                                        <td>@N_product.Fecha.ToShortDateString()</td>
                                         <td>@productos.Nombre</td>
 
                                         <td><a href="/R_Recetas/@N_product.RecetaId">Ver</a></td>
                                     </tr>
 
                                 }
+                               
                             }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="3">No se encontraron productos</td>
+                            </tr>
                         }
                        
                     </tbody>
@@ -96,6 +103,7 @@
                 case "2":
                 lista = RecetaBLL.GetList(o => o.Fecha.ToString().Contains(Criterio));
                 break;
+                
         }
 
 
