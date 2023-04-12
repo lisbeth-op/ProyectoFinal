@@ -1,4 +1,4 @@
-# ProyectoFinal
+# Proyecto Final
 # Nombre:
 Lisbeth Ortega
 # Matricula:
