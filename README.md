@@ -29,7 +29,7 @@ Registro de producto: ![image](https://user-images.githubusercontent.com/1187505
 
 Consulta de producto: ![image](https://user-images.githubusercontent.com/118750598/231587907-a7530475-e51d-43b5-a882-375c10d28356.png)
 
-Registro de materia prima: ![image](https://user-images.githubusercontent.com/118750598/231587979-18acd747-703f-4660-8fc6-cc7d7a7c1ebd.png)
+Registro de materia prima: ![image](https://user-images.githubusercontent.com/118750598/231589850-568a193e-e8d6-4982-934d-5421c2a300e3.png)
 
 Consulta de materia prima: ![image](https://user-images.githubusercontent.com/118750598/231588086-415ea0fe-372a-44f0-b933-f87cbcbba4a4.png)
 
