@@ -4,6 +4,8 @@ Lisbeth Ortega
 # Matricula:
 2019-0445
  # Usuario y contraseña:
+ usuario: ortegalisbeth915@gmail.com
+ Contraseña:L2gmb3jR$$6?9Xz
  
 # Descripcion General: 
 Es un sistema para el aerea de produccion de una panadería, el cual permite llevar un control detallado de las operaciones que se realizan en el área.
